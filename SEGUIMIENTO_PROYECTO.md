@@ -2,7 +2,7 @@
 
 > **Documento maestro para continuar el proyecto en otro chat.**  
 > Última revisión: **9 de noviembre de 2026**.  
-> Estado: **beta HTML5 v0.5.1 — Clásico trilingüe FR/ES/EN**. La remasterización 2.5D v0.4 está archivada. Nueva dirección: futura versión completamente **2D con sprites**.  
+> Estado: **beta HTML5 v0.6.0 — Clásico trilingüe FR/ES/EN, mando moderno e INPUT VGA**. La remasterización 2.5D v0.4 está archivada. Nueva dirección: futura versión completamente **2D con sprites**.  
 > Repositorio: **https://github.com/ivopixl/Loptun-Chapter-1**. Rama principal: `main`.  
 > **Regla de continuidad:** después de cada cambio, actualizar este documento, el número de versión y la matriz de pruebas. No dar por probados recorridos que no se han ejecutado.
 
@@ -19,15 +19,15 @@ El usuario quiere preservar el juego original de forma jugable, **corregir su fr
 
 Se trabaja en **HTML5 autónomo**, ejecutable en navegador sin instalación. Priorizar compatibilidad con Chrome, Edge y Firefox y controles por teclado, mando/joystick y táctiles.
 
-## 2. Estado exacto del repositorio (9/11/2026, v0.5.1)
+## 2. Estado exacto del repositorio (9/11/2026, v0.6.0)
 
 Repositorio público: https://github.com/ivopixl/Loptun-Chapter-1  
 Commit de referencia del juego y archivos históricos: [`372989c`](https://github.com/ivopixl/Loptun-Chapter-1/commit/372989cde05cc3a36c255bdb11812d994e1db0bb).
 
 | Ruta en GitHub | Función / estado |
 |---|---|
-| `index.html` | **Clásico multidioma v0.5.1** (modo VGA; puerta de idiomas FR/ES/EN). Es la entrada principal del proyecto. |
-| `clasico.html` | **Clásico multidioma v0.5.1** (copia del mismo HTML autónomo para conservar el enlace anterior). |
+| `index.html` | **Clásico multidioma v0.6.0** (modo VGA; puerta de idiomas FR/ES/EN). Es la entrada principal del proyecto. |
+| `clasico.html` | **Clásico multidioma v0.6.0** (copia del mismo HTML autónomo para conservar el enlace anterior). |
 | `README.md` | Presentación, controles, estado del proyecto y guía para GitHub Pages. |
 | `i18n/texts_v0_5.json` | Diccionario con 316 textos originales y entradas auxiliares, versiones francesa corregida, española e inglesa. |
 | `archive/remastered_v0_4.html` | Copia histórica congelada de la edición Remastered 2.5D. **No es la versión activa.** |
@@ -113,6 +113,23 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 - Nueva versión descargable: `Loptun_Clasico_Multidioma_v0_5_1.html`. `index.html` y `clasico.html` contienen exactamente los mismos bytes (blob Git `3c87f76ae3a0fe5c195379087bd5008622b6299e`, 338944 bytes).
 - **Pruebas automatizadas en Chromium:** presencia de las 10 colas en la última fila y altura 8, previsualización con las palabras `grupos`, `partes`, `juego`; arranque del acto I en español, pausa/reanudación, activación de `1234`, acceso a los cuatro actos, sin errores JavaScript. Queda pendiente revisar visualmente más diálogos y resoluciones reales y probar los actos completos.
 
+### v0.6.0 — Mando moderno, eliminación de calibración y entrada VGA (9/11/2026)
+
+**Solicitudes del autor:** (1) soporte total para mando moderno en la medida de Gamepad API; (2) eliminar la calibración DOS `JOY.MAP` de la experiencia; (3) quitar restos de textos cuando se sustituyen; (4) escribir códigos y cifras dentro de la pantalla original, sin modal externa.
+
+**Implementación:**
+- `index.html` y `clasico.html` conservan el motor y los cuatro actos históricos pero se actualizan a **v0.6.0**. La versión v0.5.1 queda archivada en `archive/clasico_multidioma_v0_5_1.html`.
+- **Gamepad estándar:** lectura mediante `navigator.getGamepads()` en cada fotograma, primera maneta conectada, cruceta o stick izquierdo con zona muerta 0,25, detección de flancos para botones y navegación de menús y pantalla de idiomas. A/RT actúa; B/LT cambia mirar/actuar; X sale; Y envía el dígito elegido con LB/RB; START pausa y SELECT/BACK vuelve al menú. Los códigos pueden introducirse por mando mediante LB/RB (o cruceta vertical), A añadir, B/X borrar, Y/START confirmar. También teclado y táctil.
+- **Calibración suprimida en tiempo de ejecución:** en el programa de presentación `LOPTUN` se detecta la entrada al bloque de calibración (etiquetas `55`–`100`) y se transfiere a `AC1`, sin dibujar instrucciones «Haut/Gauche + Touche 5» ni escribir mediciones `JOY.MAP`. Los fuentes `.BAS` originales no se modifican, y el acceso directo a cualquier acto no necesita calibración.
+- **Texto sin restos:** `printRuns` y `printCellOwner` registran las celdas de cada `PRINT`. Si llega un texto nuevo a la misma posición o solapa una frase previa, se borran las celdas anteriores, incluidos los caracteres restantes cuando el mensaje nuevo es más corto. `CLS` y `SCREEN` reinician el seguimiento; `LINE ... BF` invalida solo las zonas repintadas; el `scroll` limpia las referencias anteriores.
+- **`INPUT` in-game:** eliminada la ventana `#inputOverlay`. Los 10 campos `INPUT` de AC1 (6), AC2 (1) y AC3 (3) muestran el prompt traducido en el framebuffer VGA de 320×200; la respuesta aparece en esa misma fila con cursor parpadeante y edición/borrado. Panel numérico auxiliar dentro del `#viewport`, visible cuando se introduce un número, también utilizable con táctil. El guardado guarda el estado parcial de un `INPUT`.
+- Se mantienen la paleta VGA, las traducciones FR/ES/EN, los glifos 8×8 v0.5.1, la marcha de dos fases, taxi acelerado, código Admin `1234`, sonido, pausa y soporte de partida guardada.
+- **Código de referencia:** archivos idénticos `index.html` y `clasico.html`, blob Git SHA-1 `66a6726274868a0df9301c5d1d5a84bcae19c19a`, 349942 bytes; SHA-256 `f5f2b7bbe2264e779a09b3a4a60427fe9c04f109025a057b7ae26a7817a5840d`.
+
+**Pruebas automáticas Chromium / Playwright:** comprobados primer inicio ES, carga AC1, pausa/reanudación, reemplazar texto largo por otro corto sin residuos, abrir `INPUT` directamente en VGA, escribir/borrar/confirmar por teclado, simulación de mando estándar con desplazamiento y entrada numérica completa, salto del bloque de calibración desde el prólogo, desbloqueo `1234` y entrada a AC4. Sin excepciones JavaScript en las rutas probadas. El código JS pasa `node --check`.
+
+**Pendiente:** probar mandos físicos reales (Xbox, PlayStation y genéricos), reconexiones, mando en móvil, todas las decisiones de puzles y las 10 entradas en contexto real, guardado/reanudación en subrutinas y limpieza de texto de todas las escenas. No se afirma una validación integral de los cuatro actos.
+
 ### Publicación en GitHub (9/11/2026)
 
 - Se creó el repositorio público `ivopixl/Loptun-Chapter-1` por el usuario.
@@ -136,23 +153,23 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 
 **Guardado:** `localStorage`, prefijo `loptun96:`; guarda estado del programa, variables, framebuffer, mapa de color, punteros y parte del estado del renderer, además de preferencias. El guardado se activa manualmente, al pausar y en ciertos cambios. **No es almacenamiento en nube.**
 
-## 5. Controles documentados
+## 5. Controles documentados (v0.6.0)
 
-| Acción | Teclado | Mando / otros |
-|---|---|---|
-| Mover a Kane | Flechas o WASD | Stick izquierdo o cruceta; también botones táctiles |
-| Ejecutar acción | `Espacio` / `Enter` | Botón A |
-| Alternar *REGARDER / ACTION* | `5` | Botón B/X |
-| Elegir respuestas | `1`, `2`, `3`… | Teclado / botones numéricos en pantalla |
-| Salir de zona (cuando proceda) | `E` | Acción mapeada en el port |
-| Pausar/reanudar | `Esc` o `F10` | START o botón Pausa |
-| Desbloquear selección de actos | Escribir `1234` en menos de 3 segundos | Modo Admin aparece en el menú |
-| Seleccionar idioma inicial | Pantalla inicial: `1` francés, `2` español, `3` inglés, o botón táctil | Primer acceso o sin preferencia guardada |
-| Cambiar idioma | Selector de idioma de la barra | Los cuadros ya dibujados no cambian hasta la próxima escritura |
-| Remastered / vista VGA | **Desactivado en v0.5** | Versión anterior archivada bajo `archive/` |
-| Ajustar velocidad general/taxi | Deslizadores de la interfaz | Interfaz del juego |
+| Acción | Teclado | Mando Gamepad API |
+| --- | --- | --- |
+| Mover a Kane | Flechas / WASD | Stick izquierdo o cruceta |
+| Acción | Espacio / Enter | A o RT |
+| Mirar / actuar | 5 | B o LT |
+| Salir de una zona (cuando proceda) | E | X |
+| Seleccionar respuesta numérica (0–9) | Tecla correspondiente | LB/RB escoge dígito; Y lo envía |
+| Editar un `INPUT` numérico | Escribir dígitos, Retroceso, Enter | LB/RB o cruceta arriba/abajo; A añadir; B/X borrar; Y/START confirmar |
+| Pausa | Esc / F10 | START fuera de `INPUT` |
+| Menús | Ratón / teclado | Stick o cruceta navegar; A confirmar |
+| Volver al menú | Botón Menú | SELECT/BACK |
+| Desbloquear los cuatro actos | 1234 en el menú | Código numérico desde teclado (no se ha añadido un atajo de admin directo por mando) |
+| Ajustar velocidades | Deslizadores | Interfaz gráfica; la velocidad no depende de la calibración |
 
-**Nota del manual original (`MANUEL.TXT`):** el joystick era obligatorio; un botón actuaba, la tecla `5` elegía la actitud y `E` permitía salir solo de lugares iniciales de capítulo. El port permite controles adicionales para navegadores modernos.
+La antigua secuencia `Haut/Gauche + Touche 5` / `Bas/Droite + Touche 6` de `LOPTUN.BAS` **ya no se ejecuta**. El mando debe ser reconocido por el navegador; no se ha probado aún físicamente.
 
 ## 6. Pruebas: qué está comprobado y qué NO
 
@@ -230,7 +247,7 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 
 ## 9. Texto para iniciar un nuevo chat
 
-> Continuamos **Loptun: La légende de Kane** (IVOSOFT), juego QuickBASIC convertido a HTML5, repositorio https://github.com/ivopixl/Loptun-Chapter-1. **Lee primero `SEGUIMIENTO_PROYECTO.md`, `README.md`, `index.html` e `i18n/texts_v0_5.json` en main**. La versión principal es **Clásico VGA v0.5.1 trilingüe (francés corregido, español e inglés)**. El usuario **ha aparcado Remastered 2.5D**: está archivado en `archive/remastered_v0_4.html`. El futuro remake será **puramente 2D con sprites y escenarios 2D**, nunca 3D sin petición expresa. Mantén los cuatro actos y todos los acertijos, los nombres y códigos originales, las dos fases de marcha, la paleta VGA, la velocidad de taxi independiente, Admin `1234`, pausa, teclado/mando/táctil, guardado y selector de idioma. Tras cada entrega prueba lo implementado, actualiza este seguimiento y sube el HTML y documentos a GitHub. No afirmes recorridos completos sin haberlos validado.
+> Continuamos **Loptun: La légende de Kane** (IVOSOFT), juego QuickBASIC convertido a HTML5, repositorio https://github.com/ivopixl/Loptun-Chapter-1. **Lee primero `SEGUIMIENTO_PROYECTO.md`, `README.md`, `index.html` e `i18n/texts_v0_5.json` en main**. La versión principal es **Clásico VGA v0.6.0 trilingüe (francés corregido, español e inglés)**. El usuario **ha aparcado Remastered 2.5D**: está archivado en `archive/remastered_v0_4.html`. El futuro remake será **puramente 2D con sprites y escenarios 2D**, nunca 3D sin petición expresa. Mantén los cuatro actos y todos los acertijos, los nombres y códigos originales, las dos fases de marcha, la paleta VGA, la velocidad de taxi independiente, Admin `1234`, pausa, teclado/mando/táctil, guardado y selector de idioma. Tras cada entrega prueba lo implementado, actualiza este seguimiento y sube el HTML y documentos a GitHub. No afirmes recorridos completos sin haberlos validado.
 
 ## 10. Registro de futuras entregas (rellenar al actualizar)
 
@@ -240,6 +257,8 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 | 2026-11-09 | **0.5** | **Clásico trilingüe FR/ES/EN**, 316 textos corregidos/traducidos, selector inicial, mejora de caracteres VGA, Remastered archivado | Playwright: tres idiomas, inicio I, acceso IV, pausa, Admin 1234, sin errores en rutas probadas | Validar todos los diálogos y cortes VGA, recorridos y puzzles completos, mando real | `3cf69f1` (index), `fbc072b` (clasico), `e03a514` (diccionario) |
 
 | 2026-11-09 | **0.5.1** | Corrección de colas de glifos en texto VGA (p/q/g/j/y/ç/Ç/Q y signos); sin cambios de mecánicas | Chromium: render de glifos, acto I, pausa, Admin 1234, sin errores JS | Comprobar textos en escenas completas, en móvil y mandos reales | `20fd176` (index), `28049de` (clasico) |
+
+| 2026-11-09 | **0.6.0** | Mando moderno con Gamepad API; calibración DOS omitida; limpieza de frases antiguas; INPUT numérico en pantalla VGA | Chromium: escritura/borrado/confirmación de código, gamepad simulado, reemplazo de texto, pausa, Admin, arranque de AC1/AC4, salto de calibración; node --check | Probar mando físico y recorridos/puzles completos | `efc6c5e` (index), `0ecd7ea` (clasico) |
 
 ---
 
