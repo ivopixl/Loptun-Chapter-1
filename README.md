@@ -2,17 +2,21 @@
 
 Conversión a HTML5 del juego QuickBASIC original de **IVOSOFT** (1993–1997).
 
-**Versión actual: Clásico VGA v0.5, trilingüe (francés, español e inglés).**
+**Versión actual: Clásico VGA v0.5.1, trilingüe (francés, español e inglés).**
 
 ## Jugar
 
 - **[Jugar / descargar HTML5 clásico](index.html)** — versión principal, autónoma, sin instalación.
-- **[Enlace histórico al clásico](clasico.html)** — misma versión v0.5.
+- **[Enlace histórico al clásico](clasico.html)** — misma versión v0.5.1.
 - Si GitHub Pages está activado: https://ivopixl.github.io/Loptun-Chapter-1/
 
 Al entrar por primera vez aparece el selector de idioma 🇫🇷 / 🇪🇸 / 🇬🇧. También puedes cambiarlo desde el menú superior. Los textos que ya están dibujados en la pantalla VGA se actualizarán al aparecer el siguiente diálogo, no retroactivamente.
 
-## Novedades v0.5
+## Novedades v0.5.1
+
+- **Corregidos los glifos VGA cortados**: ahora las letras `p`, `q`, `g`, `j` e `y`, la cedilla y otros signos muestran su parte inferior completa. La fuente mantiene 8×8 píxeles y la misma cuadrícula original (320×200).
+
+### Cambios anteriores (v0.5)
 
 - Revisión y corrección de **316 frases originales en francés** extraídas de `PRINT` y `INPUT`, y traducciones al **español** y al **inglés**, conservando nombres, códigos y pistas de los puzles.
 - Interfaz traducida: menú, ayuda, pausa, guardado y controles.
