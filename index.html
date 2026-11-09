@@ -725,7 +725,7 @@ function continueAct(name){name=name.toUpperCase().replace('.BAS','');if(name===
  if(!PROGRAMS[name]){console.warn('RUN desconocido',name);live=false;return}
  loadProgram(name,true);
 }
-function loadProgram(name,reset=true){awaitInput=false;inputPosition=null;inputBuffer='';inputLastLength=0;$('numberHud').hidden=true;program=name;ops=PROGRAMS[name].items;labels=PROGRAMS[name].labels;pc=0;waitUntil=0;gameTimeMs=0;nextMoveAtMs=0;commandBudget=0;sampledStick=[0,0];forgetPrintRuns();live=true;paused=false;callstack=[];forstack=[];evalCache.clear();if(reset){neoClearText();neo.scenePc=0;neo.usedHero=false;neo.lastProgram='';heroInfo=null;vars=new Proxy(Object.create(null),{get(o,k){return k in o?o[k]:typeof k==='string'&&k.endsWith('$')?'':0}});framebuffer.fill(0);screenMode=13;remap.splice(0,256,...Array.from({length:256},(_,i)=>i));cy=cx=1;ink=txtCol=15;penX=penY=0;inkeys.length=0;}
+function loadProgram(name,reset=true){awaitInput=false;inputPosition=null;inputBuffer='';inputLastLength=0;$('numberHud').hidden=true;lastHudSignature='';program=name;ops=PROGRAMS[name].items;labels=PROGRAMS[name].labels;pc=0;waitUntil=0;gameTimeMs=0;nextMoveAtMs=0;commandBudget=0;sampledStick=[0,0];forgetPrintRuns();live=true;paused=false;callstack=[];forstack=[];evalCache.clear();if(reset){neoClearText();neo.scenePc=0;neo.usedHero=false;neo.lastProgram='';heroInfo=null;vars=new Proxy(Object.create(null),{get(o,k){return k in o?o[k]:typeof k==='string'&&k.endsWith('$')?'':0}});framebuffer.fill(0);screenMode=13;remap.splice(0,256,...Array.from({length:256},(_,i)=>i));cy=cx=1;ink=txtCol=15;penX=penY=0;inkeys.length=0;}
  unlocked=Math.max(unlocked,Math.max(1,['AC1','AC2','AC3','AC4'].indexOf(name)+1));storageSet('unlocked',unlocked);$('actLabel').textContent=name==='LOPTUN'?({fr:'Prologue',es:'Prólogo',en:'Prologue'}[language]):chapterName(name.slice(-1));$('menu').classList.add('hidden');$('pauseOverlay').classList.remove('on');$('pause').textContent='⏸ Pausa';fitPalette();
 }
 function storageSet(key,val){try{localStorage.setItem('loptun96:'+key,String(val))}catch(e){}}
@@ -743,7 +743,7 @@ function restore(){try{let raw=storageGet('save');if(!raw)return false;let s=JSO
    awaitInput=s.inputState.dest;inputBuffer=s.inputState.buffer||'';
    inputPosition=s.inputState.position;inputLastLength=s.inputState.lastLength||inputBuffer.length;
  }else{awaitInput=false;inputPosition=null;inputBuffer='';inputLastLength=0}
- refreshDigitHUD();fitPalette();return true;
+ lastHudSignature='';refreshDigitHUD();fitPalette();return true;
  }catch(e){console.error('restore',e);return false}}
 function jump(label){let key=String(label).trim().replace(/:$/,'').toLowerCase();if(labels[key]===undefined){console.warn('Etiqueta no encontrada',program,key);return}pc=labels[key]}
 function execute(ins){let op=ins[0],t=performance.now();switch(op){
@@ -1323,7 +1323,7 @@ function togglePause(){
  down.clear();inkeys.length=0;buttonEdges[0]=0;sampledStick=[0,0];commandBudget=0;
  if(paused)saveGame();
 }
-function menu(){if(live)saveGame();awaitInput=false;inputPosition=null;inputBuffer='';$('numberHud').hidden=true;live=false;paused=false;$('pauseOverlay').classList.remove('on');$('menu').classList.remove('hidden');updateMenu()}
+function menu(){if(live)saveGame();awaitInput=false;inputPosition=null;inputBuffer='';$('numberHud').hidden=true;lastHudSignature='';live=false;paused=false;$('pauseOverlay').classList.remove('on');$('menu').classList.remove('hidden');updateMenu()}
 function updateMenu(){
  $('adminPanel').hidden=!adminMode;
  $('chapterLabel').textContent=adminMode?({fr:'Tous les actes · accès admin',es:'Todos los actos · acceso admin',en:'All acts · admin access'}[language]):localeText('chapterLabel');
