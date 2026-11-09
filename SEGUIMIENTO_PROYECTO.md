@@ -2,7 +2,7 @@
 
 > **Documento maestro para continuar el proyecto en otro chat.**  
 > Última revisión: **9 de noviembre de 2026**.  
-> Estado: **beta HTML5 v0.5 — Clásico trilingüe FR/ES/EN**. La remasterización 2.5D v0.4 está archivada. Nueva dirección: futura versión completamente **2D con sprites**.  
+> Estado: **beta HTML5 v0.5.1 — Clásico trilingüe FR/ES/EN**. La remasterización 2.5D v0.4 está archivada. Nueva dirección: futura versión completamente **2D con sprites**.  
 > Repositorio: **https://github.com/ivopixl/Loptun-Chapter-1**. Rama principal: `main`.  
 > **Regla de continuidad:** después de cada cambio, actualizar este documento, el número de versión y la matriz de pruebas. No dar por probados recorridos que no se han ejecutado.
 
@@ -19,15 +19,15 @@ El usuario quiere preservar el juego original de forma jugable, **corregir su fr
 
 Se trabaja en **HTML5 autónomo**, ejecutable en navegador sin instalación. Priorizar compatibilidad con Chrome, Edge y Firefox y controles por teclado, mando/joystick y táctiles.
 
-## 2. Estado exacto del repositorio (9/11/2026, v0.5)
+## 2. Estado exacto del repositorio (9/11/2026, v0.5.1)
 
 Repositorio público: https://github.com/ivopixl/Loptun-Chapter-1  
 Commit de referencia del juego y archivos históricos: [`372989c`](https://github.com/ivopixl/Loptun-Chapter-1/commit/372989cde05cc3a36c255bdb11812d994e1db0bb).
 
 | Ruta en GitHub | Función / estado |
 |---|---|
-| `index.html` | **Clásico multidioma v0.5** (modo VGA; puerta de idiomas FR/ES/EN). Es la entrada principal del proyecto. |
-| `clasico.html` | **Clásico multidioma v0.5** (copia del mismo HTML autónomo para conservar el enlace anterior). |
+| `index.html` | **Clásico multidioma v0.5.1** (modo VGA; puerta de idiomas FR/ES/EN). Es la entrada principal del proyecto. |
+| `clasico.html` | **Clásico multidioma v0.5.1** (copia del mismo HTML autónomo para conservar el enlace anterior). |
 | `README.md` | Presentación, controles, estado del proyecto y guía para GitHub Pages. |
 | `i18n/texts_v0_5.json` | Diccionario con 316 textos originales y entradas auxiliares, versiones francesa corregida, española e inglesa. |
 | `archive/remastered_v0_4.html` | Copia histórica congelada de la edición Remastered 2.5D. **No es la versión activa.** |
@@ -104,6 +104,14 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 - Se exportó un diccionario editable de traducciones en `i18n/texts_v0_5.json`.
 - **Pruebas en Chromium (Playwright):** se verificaron selección FR/ES/EN, correspondencia de los 319 elementos del diccionario (316 originales + 3 etiquetas técnicas), diálogos representativos del primer acto, títulos de acto y corrección de ACTE IV, entrada al acto I, pausa y reanudación, activación de `1234` y acceso al acto IV; sin excepciones de JavaScript en esas rutas. **No se ha completado un recorrido integral de los cuatro actos ni se ha probado físicamente un gamepad.**
 - **HTML v0.5:** 338251 bytes; SHA-256 `3eb8e6f02d9ec68fa2e1885b4c8e6458d36de11e61d0731b740d5b1974e22797`. Los dos enlaces principales apuntan al mismo contenido.
+
+### v0.5.1 — Corrección tipográfica de descendentes VGA (9/11/2026)
+
+- **Incidencia reportada con captura por el autor:** algunas letras minúsculas (`p`, `q`, también `g`, `j`, `y`) parecían cortadas por abajo porque el diccionario `FONT_READABLE` v0.5 se generó rasterizando glifos de una fuente 10 px directamente en solo 8 filas y se perdía el descendente.
+- Se introdujo un mapa específico `FONT_DESCENDER_FIXES` con **10 glifos de píxeles diseñados para caber enteros en 8×8**: `p`, `q`, `g`, `j`, `y`, `ç`, `Ç`, `Q`, coma y punto y coma. Se aplica mediante `Object.assign(FONT_READABLE,FONT_DESCENDER_FIXES)` antes de `charAt`. La última fila de cada glifo reparado conserva píxeles de cola.
+- **No se ha cambiado la cuadrícula VGA 320×200**, su interlineado de 8 píxeles, la lógica del intérprete, las traducciones ni los sprites originales. Se mantienen 40×25 celdas y todos los controles.
+- Nueva versión descargable: `Loptun_Clasico_Multidioma_v0_5_1.html`. `index.html` y `clasico.html` contienen exactamente los mismos bytes (blob Git `3c87f76ae3a0fe5c195379087bd5008622b6299e`, 338944 bytes).
+- **Pruebas automatizadas en Chromium:** presencia de las 10 colas en la última fila y altura 8, previsualización con las palabras `grupos`, `partes`, `juego`; arranque del acto I en español, pausa/reanudación, activación de `1234`, acceso a los cuatro actos, sin errores JavaScript. Queda pendiente revisar visualmente más diálogos y resoluciones reales y probar los actos completos.
 
 ### Publicación en GitHub (9/11/2026)
 
@@ -222,7 +230,7 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 
 ## 9. Texto para iniciar un nuevo chat
 
-> Continuamos **Loptun: La légende de Kane** (IVOSOFT), juego QuickBASIC convertido a HTML5, repositorio https://github.com/ivopixl/Loptun-Chapter-1. **Lee primero `SEGUIMIENTO_PROYECTO.md`, `README.md`, `index.html` e `i18n/texts_v0_5.json` en main**. La versión principal es **Clásico VGA v0.5 trilingüe (francés corregido, español e inglés)**. El usuario **ha aparcado Remastered 2.5D**: está archivado en `archive/remastered_v0_4.html`. El futuro remake será **puramente 2D con sprites y escenarios 2D**, nunca 3D sin petición expresa. Mantén los cuatro actos y todos los acertijos, los nombres y códigos originales, las dos fases de marcha, la paleta VGA, la velocidad de taxi independiente, Admin `1234`, pausa, teclado/mando/táctil, guardado y selector de idioma. Tras cada entrega prueba lo implementado, actualiza este seguimiento y sube el HTML y documentos a GitHub. No afirmes recorridos completos sin haberlos validado.
+> Continuamos **Loptun: La légende de Kane** (IVOSOFT), juego QuickBASIC convertido a HTML5, repositorio https://github.com/ivopixl/Loptun-Chapter-1. **Lee primero `SEGUIMIENTO_PROYECTO.md`, `README.md`, `index.html` e `i18n/texts_v0_5.json` en main**. La versión principal es **Clásico VGA v0.5.1 trilingüe (francés corregido, español e inglés)**. El usuario **ha aparcado Remastered 2.5D**: está archivado en `archive/remastered_v0_4.html`. El futuro remake será **puramente 2D con sprites y escenarios 2D**, nunca 3D sin petición expresa. Mantén los cuatro actos y todos los acertijos, los nombres y códigos originales, las dos fases de marcha, la paleta VGA, la velocidad de taxi independiente, Admin `1234`, pausa, teclado/mando/táctil, guardado y selector de idioma. Tras cada entrega prueba lo implementado, actualiza este seguimiento y sube el HTML y documentos a GitHub. No afirmes recorridos completos sin haberlos validado.
 
 ## 10. Registro de futuras entregas (rellenar al actualizar)
 
@@ -230,6 +238,8 @@ clasico.html 1fb2c7c560e124ce6fa205e44fb685519f964a2d012b0ecd4e1f06a3a3793696
 |---|---|---|---|---|---|
 | 2026-11-09 | 0.4 (base) | Remastered 2.5D y Clásico; código y fuentes preservadas | Inicio de los cuatro actos, visuales y controles parciales | Recorridos completos, guardado dentro de GOSUB, escenarios interactivos remasterizados | `372989c` (base previa a este documento) |
 | 2026-11-09 | **0.5** | **Clásico trilingüe FR/ES/EN**, 316 textos corregidos/traducidos, selector inicial, mejora de caracteres VGA, Remastered archivado | Playwright: tres idiomas, inicio I, acceso IV, pausa, Admin 1234, sin errores en rutas probadas | Validar todos los diálogos y cortes VGA, recorridos y puzzles completos, mando real | `3cf69f1` (index), `fbc072b` (clasico), `e03a514` (diccionario) |
+
+| 2026-11-09 | **0.5.1** | Corrección de colas de glifos en texto VGA (p/q/g/j/y/ç/Ç/Q y signos); sin cambios de mecánicas | Chromium: render de glifos, acto I, pausa, Admin 1234, sin errores JS | Comprobar textos en escenas completas, en móvil y mandos reales | `20fd176` (index), `28049de` (clasico) |
 
 ---
 
