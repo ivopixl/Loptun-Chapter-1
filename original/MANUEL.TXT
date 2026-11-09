@@ -1,0 +1,20 @@
+Voici un petit manuel des touches:
+
+Soyez en majuscule .
+
+Le joystick est obligatoire :
+
+1 bouton = actionner l'attitude
+
+"5" = choix de l'attitude : Regarder / Action ou quitter une attitude
+EX: Vous regardez une affiche : appuyez sur 2 fois sur 5 pour
+recommencer … marcher .
+
+"E" = Quitter : cette commande n'est applicable qu'aux premiers lieux de chaque
+chapitre . EX : Chapitre 1 : c'est la rue avec la pancarte clignotante 
+TAXI.
+
+droite ou gauche = pour se d‚placer
+
+Haut et bas = pour se d‚placer
+
