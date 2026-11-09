@@ -9,6 +9,10 @@ Conversión y remasterización experimental del juego original QuickBASIC de **I
 - Ambos HTML funcionan de forma autónoma en navegadores modernos.
 - Incluyen teclado, mando/joystick (Gamepad API), sonido Web Audio y guardado local.
 
+## Continuidad del proyecto
+
+**[SEGUIMIENTO_PROYECTO.md](SEGUIMIENTO_PROYECTO.md)** es el documento maestro para continuar en otros chats: resume los cambios desde v0.1, el estado real de v0.4, la arquitectura, los controles, las pruebas pendientes, el plan de mejoras y el texto de traspaso. **Actualizarlo en cada versión**.
+
 ## Contenido
 
 | Ruta | Contenido |
@@ -16,6 +20,7 @@ Conversión y remasterización experimental del juego original QuickBASIC de **I
 | `index.html` | Loptun Remastered v0.4 |
 | `clasico.html` | Loptun Clásico v0.4 |
 | `original/` | Fuentes QuickBASIC y recursos originales proporcionados por el autor |
+| `SEGUIMIENTO_PROYECTO.md` | Estado, historial, pruebas y continuidad entre chats |
 
 ## Controles
 
